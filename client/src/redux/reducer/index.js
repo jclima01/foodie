@@ -19,11 +19,13 @@ const rootReducer = (state = initialState, { type, payload }) => {
         ...state,
       };
     case LOGIN_SUCCESS:
+      localStorage.setItem("user", JSON.stringify(payload));
       return {
         ...state,
         user: payload,
       };
     case LOGIN_ERROR:
+      
       return {
         ...state,
         user: null,

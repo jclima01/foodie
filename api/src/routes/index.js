@@ -5,13 +5,13 @@ const recipeRouter = require('./RecipeRoute.js');
 const dietRouter = require('./DietRoute.js');
 
 
-const router = Router();
+const mainRouter = Router();
 
 // Configurar los routers
-router.use('/auth', authRouter);
-router.use('/recipes', recipeRouter);
-router.use('/diets', dietRouter);
+mainRouter.use('/auth', authRouter);
+mainRouter.use('/recipes', recipeRouter);
+mainRouter.use('/diets', dietRouter);
 
 
 
-module.exports = router;
+module.exports = mainRouter;

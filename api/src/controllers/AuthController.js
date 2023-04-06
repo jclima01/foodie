@@ -28,13 +28,11 @@ exports.login = async (email, password) => {
   if (!user) throw new Error("User not found");
 
   const pass = await bcrypt.compare(password, user.password);
-  console.log("user", pass);
 
   if (!pass) throw new Error("Password is incorrect");
 
   const token = jwt.sign({ id: user._id }, process.env.KEY_JWT, {
     expiresIn: "1h",
   });
-console.log(user)
   return { token, id:user.dataValues.id, email: user.dataValues.email };
 };

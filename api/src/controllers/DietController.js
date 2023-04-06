@@ -2,26 +2,51 @@ const axios = require("axios");
 const { Diet } = require("../db");
 require("dotenv").config();
 const API_KEY = process.env.API_KEY;
-exports.getDiet = async () => {
-  try {
-    // Realizamos la solicitud a la API de Spoonacular utilizando Axios
-    const {data} = await axios.get(
+exports.postDiets = async () => {
+  const { data } = await axios.get(
+    `https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&number=100&addRecipeInformation=true`
+  );
+  const dietsArray = [];
+  data.results.forEach((result) => {
+    result.diets.forEach((diet) => {
+      if (!dietsArray.includes(diet)) {
+        dietsArray.push(diet);
+      }
+    });
+  });
+  const diets = dietsArray.map((diet) => {
+    return {
+      name: diet,
+    };
+  });
+
+  const d = await Diet.bulkCreate(diets);
+
+  return d;
+};
+exports.getDiets = async () => {
+  const diets = await Diet.findAll();
+  if (diets.length === 0) {
+    const { data } = await axios.get(
       `https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&number=100&addRecipeInformation=true`
     );
-    const diets = [];
+    const dietsArrayFromApi = [];
     data.results.forEach((result) => {
       result.diets.forEach((diet) => {
-        if (!diets.includes(diet)) {
-          diets.push(diet);
+        if (!dietsArrayFromApi.includes(diet)) {
+          dietsArrayFromApi.push(diet);
         }
       });
     });
-    // diets.forEach(diet => {
-    //   await Diet.create(diet);
-    // });
+    const dietsArrayWhitObjects = dietsArrayFromApi.map((diet) => {
+      return {
+        name: diet,
+      };
+    });
 
-    return data;
-  } catch (error) {
-    throw new Error(error.message);
+    const d = await Diet.bulkCreate(dietsArrayWhitObjects);
+    return d;
+  } else {
+    return diets;
   }
 };

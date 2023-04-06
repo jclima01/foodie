@@ -1,38 +1,34 @@
 const axios = require("axios");
 const { Recipe } = require("../db");
 const { Op } = require("sequelize");
+const Diet = require("../models/Diet");
 require("dotenv").config();
 const API_KEY = process.env.API_KEY;
-exports.getRecipe = async (idRecipe) => {
-  try {
-    const recipeDB = await Recipe.findByPk(idRecipe);
 
-    if (!recipeDB) {
-      const { data } = await axios.get(
-        `https://api.spoonacular.com/recipes/${idRecipe}/information?apiKey=${API_KEY}`
-      );
-      const { id, title, summary, healthScore, instructions, image } = data;
-      const newRecipe = await Recipe.create({
-        id,
-        title,
-        summary,
-        healthScore,
-        instructions,
-        image,
-      });
-      return data;
-    } else {
-      return recipeDB;
-    }
-  } catch (error) {
-    throw new Error(error.message);
-  }
+exports.getRecipeFromDB = async (idRecipe) => {
+  const recipeDB = await Recipe.findByPk(idRecipe);
+
+  return recipeDB;
+};
+exports.getRecipeFromAPI = async (idRecipe) => {
+  const { data } = await axios.get(
+    `https://api.spoonacular.com/recipes/${idRecipe}/information?apiKey=${API_KEY}`
+  );
+  const { id, title, summary, healthScore, instructions, image, diets } = data;
+
+  return {
+    id,
+    title,
+    summary,
+    healthScore,
+    instructions,
+    image,
+    diets,
+  };
 };
 
 exports.getRecipeByQuery = async (query) => {
   try {
-    // const recipeDB = await Recipe.findByPk(idRecipe);
-    if (!query) throw new Error("query null");
     const { data } = await axios.get(
       `https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&query=${query}
       `
@@ -47,13 +43,14 @@ exports.getRecipeByQuery = async (query) => {
         ],
       },
     });
-    return { db: recipes, api: results };
+    return [...recipes, ...results];
   } catch (error) {
     throw new Error(error.message);
   }
 };
 
 exports.postRecipe = async (
+  diets,
   title,
   image,
   summary,
@@ -61,12 +58,18 @@ exports.postRecipe = async (
   instructions
 ) => {
   try {
-    const [recipe, created] = await Recipe.findOrCreate({
-      where: { title },
-      default: { title, image, summary, healthScore, instructions },
+    const newRecipe = await Recipe.create({
+      title,
+      image,
+      summary,
+      healthScore,
+      instructions,
     });
-    if (!recipe) throw new Error("recipe not created");
-    return recipe;
+    diets = diets.map((diet) => diet.name);
+    await newRecipe.addDiet(diets.id);
+
+    // newRecipe.save();
+    return newRecipe;
   } catch (error) {
     throw new Error(error.message);
   }

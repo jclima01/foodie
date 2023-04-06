@@ -26,7 +26,6 @@ const Register = () => {
   return (
     <div className="d-flex justify-content-center align-items-center vh-100">
       <form className="text-center" onSubmit={handleSubmit}>
-       
         <div className="form-outline mb-4">
           <input
             type="email"
@@ -56,8 +55,6 @@ const Register = () => {
         <button type="submit" className="btn btn-primary btn-block mb-4">
           Sign in
         </button>
-
-      
       </form>
     </div>
   );

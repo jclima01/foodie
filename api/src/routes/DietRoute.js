@@ -1,18 +1,13 @@
 const { Router } = require("express");
 const router = Router();
-const {getDiet} = require('../controllers/DietController');
+const {
+  postDietsHandler,
+  getDietsHandler,
+} = require("../handlers/DietHandler");
 
 //Router Authentication
-router.post("/", async (req, res) => {
-  
-  try {
-     const newUser = await getDiet()
-    res.status(200).json(newUser);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
+router.post("/", postDietsHandler);
+router.get("/", getDietsHandler);
 
 // router.post("/", async (req, res) => {
 //     const { email, password} = req.body;
@@ -23,6 +18,5 @@ router.post("/", async (req, res) => {
 //       res.status(500).json({ error: error.message });
 //     }
 //   });
-
 
 module.exports = router;

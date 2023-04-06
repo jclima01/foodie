@@ -7,7 +7,7 @@ export const REGISTER = "REGISTER";
 export const REGISTER_START = "REGISTER_START";
 export const REGISTER_ERROR = "REGISTER_ERROR";
 export const LOADING = "LOADING";
-
+export const GET_RECIPES = "GET_RECIPES";
 export const register = (email, password) => {
   try {
     return async function (dispatch) {
@@ -15,7 +15,6 @@ export const register = (email, password) => {
         email,
         password,
       });
-      console.log(response);
       return dispatch({
         type: REGISTER,
         payload: response.data,
@@ -41,24 +40,27 @@ export const logout = () => {
 export const login = (email, password) => {
   try {
     return async function (dispatch) {
-      const response = await axios.get(
-        "http://localhost:3001/auth/login",
-        {
-          email,
-          password,
-        }
-      )
-      console.log(response.data);
-      // if (response.data) {
-        return dispatch({
-          type: LOGIN_SUCCESS,
-          payload: response.data,
-        // });
-      // } else {
-      //   return dispatch({
-      //     type: LOGIN_ERROR,
-        });
-      // }
+      const response = await axios.post("http://localhost:3001/auth/login", {
+        email,
+        password,
+      });
+      return dispatch({
+        type: LOGIN_SUCCESS,
+        payload: response.data,
+      });
+    };
+  } catch (err) {
+    console.log(err);
+  }
+};
+export const getRecipes = () => {
+  try {
+    return async function (dispatch) {
+      const response = await axios.post("http://localhost:3001/recipes");
+      return dispatch({
+        type: GET_RECIPES,
+        payload: response.data,
+      });
     };
   } catch (err) {
     console.log(err);
