@@ -1,13 +1,13 @@
 import React from "react";
 
-const RecipeCard = () => {
-  
-  return <div>
+const RecipeCard = ({ recipe }) => {
 
-
-    <img src={recipe.img} alt={recipe.title} />
-    <h1>{recipe.title}</h1>
-  </div>;
+  return (
+    <div>
+      <h1>{recipe.title}</h1>
+      <img src={recipe.image} alt={recipe.title} />
+    </div>
+  );
 };
 
 export default RecipeCard;

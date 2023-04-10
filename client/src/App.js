@@ -1,4 +1,5 @@
 import "./App.css";
+import AddRecipe from "./components/AddRecipe/AddRecipe";
 import Footer from "./components/Footer/Footer";
 import Home from "./components/Home/Home";
 import Login from "./components/Login/Login";
@@ -13,6 +14,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/home" element={<Home />} />
+        <Route path="/addRecipe" element={<AddRecipe />} />
+
         <Route path="*" element={<Navigate to="/login" />} />
       </Routes>
       <Footer/>

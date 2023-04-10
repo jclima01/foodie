@@ -3,6 +3,7 @@ const {
   getRecipeFromAPI,
   getRecipeByQuery,
   postRecipe,
+  getAllRecipes,
 } = require("../controllers/RecipeController");
 
 const getRecipeHandler = async (req, res) => {
@@ -21,10 +22,10 @@ const getRecipeHandler = async (req, res) => {
   }
 };
 const getRecipebyQueryHandler = async (req, res) => {
-  const { query } = req.query;
+  const { name } = req.query;
   try {
-    const recipes = await getRecipeByQuery(query);
-    res.status(200).json(recipes);
+    const result = name ? await getRecipeByQuery(name) : await getAllRecipes();
+    res.status(200).json(result);
   } catch (error) {
     console.log(error);
     res.status(400).json(error.message);
@@ -39,10 +40,9 @@ const postRecipeHandler = async (req, res) => {
       image,
       summary,
       healthScore,
-      instructions,
-      
+      instructions
     );
-    
+
     res.status(200).json(newRecipe);
   } catch (error) {
     res.status(400).json({ error: error.message });

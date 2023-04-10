@@ -1,19 +1,27 @@
 // Importa las action types acá
 
-import { REGISTER, LOGOUT,LOGIN_SUCCESS,LOGIN_ERROR } from "../actions";
+import {
+  REGISTER,
+  LOGOUT,
+  LOGIN_SUCCESS,
+  LOGIN_ERROR,
+  GET_RECIPES,
+  ADD_RECIPE,
+  GET_DIETS
+} from "../actions";
 
 const initialState = {
-  user:{},
+  user: {},
+  recipes: [],
+  diets:[]
 };
 
 const rootReducer = (state = initialState, { type, payload }) => {
   switch (type) {
-
     case REGISTER:
       return {
         ...state,
       };
-
     case LOGOUT:
       return {
         ...state,
@@ -25,12 +33,25 @@ const rootReducer = (state = initialState, { type, payload }) => {
         user: payload,
       };
     case LOGIN_ERROR:
-      
       return {
         ...state,
         user: null,
       };
-   
+    case GET_RECIPES:
+      return {
+        ...state,
+        recipes: [ ...payload],
+      };
+    case ADD_RECIPE:
+      return{
+        ...state,
+        recipes: [...state.recipes, ...payload]
+      }
+    case GET_DIETS:
+      return{
+        ...state,
+        diets: [...state.diets, ...payload]
+      }
 
     default:
       return {
