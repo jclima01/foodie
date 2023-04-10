@@ -65,16 +65,26 @@ export const getRecipes = () => {
     console.log(err);
   }
 };
-export const addRecipe = (payload) => {
+export const addRecipe = (
+  title,
+  image,
+  summary,
+  instructions,
+  healthScore,
+  diets
+) => {
   try {
     return async function (dispatch) {
-      const response = await axios.post(
-        "http://localhost:3001/recipes",
-        payload
-      );
+      const { data } = await axios.post("http://localhost:3001/recipes", {
+        title,
+        image,
+        summary,
+        instructions,
+        healthScore,
+        diets,
+      });
       return dispatch({
-        type: ADD_RECIPE,
-        payload: response.data,
+        type: ADD_RECIPE
       });
     };
   } catch (err) {
@@ -84,12 +94,10 @@ export const addRecipe = (payload) => {
 export const getDiets = () => {
   try {
     return async function (dispatch) {
-      const response = await axios.get(
-        "http://localhost:3001/diets"
-      );
+      const { data } = await axios.get("http://localhost:3001/diets");
       return dispatch({
         type: GET_DIETS,
-        payload: response.data,
+        payload: data,
       });
     };
   } catch (err) {

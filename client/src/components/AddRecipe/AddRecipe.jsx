@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { validation } from "./validations.js";
+// import { validation } from "./validations.js";
 import s from "./addrecipe.module.css";
 import { addRecipe, getDiets } from "../../redux/actions/index.js";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,14 +16,7 @@ const AddRecipe = () => {
     instructions: "",
     diets: [],
   });
-  const [errors, setErrors] = useState({
-    title: "",
-    image: "",
-    summary: "",
-    healthScore: "",
-    instructions: "",
-    diets: [],
-  });
+  console.log(payload);
 
   useEffect(() => {
     dispatch(getDiets());
@@ -38,7 +31,16 @@ const AddRecipe = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(addRecipe(payload));
+    dispatch(
+      addRecipe(
+        payload.title,
+        payload.image,
+        payload.summary,
+        payload.instructions,
+        payload.healthScore,
+        payload.diets
+      )
+    );
   };
   console.log();
   return (
@@ -108,12 +110,15 @@ const AddRecipe = () => {
                   type="checkbox"
                   name={diet.name}
                   id={diet.id}
-                  checked={payload.diets.includes(diet.id)}
+                  checked={payload.diets.some((d) => d.id === diet.id)}
                   onChange={(e) => {
                     if (e.target.checked) {
                       setPayload({
                         ...payload,
-                        diets: [...payload.diets, diet.id],
+                        diets: [
+                          ...payload.diets,
+                          { id: diet.id, name: diet.name },
+                        ],
                       });
                     } else {
                       setPayload({

@@ -45,7 +45,7 @@ const rootReducer = (state = initialState, { type, payload }) => {
     case ADD_RECIPE:
       return{
         ...state,
-        recipes: [...state.recipes, ...payload]
+        recipes: [...state.recipes]
       }
     case GET_DIETS:
       return{

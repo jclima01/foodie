@@ -1,11 +1,12 @@
 import React from "react";
 import styles from "./Nav.module.css"
+import { Link} from "react-router-dom"
 const Nav = () => {
   return (
     <nav className={styles.nav}>
-      <div>
+      <Link to="/home">
         <button>Logo</button>
-      </div>
+      </Link>
       <div>
         <input type="text" />
         <button>Search</button>

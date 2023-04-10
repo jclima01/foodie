@@ -15,20 +15,6 @@ exports.getAllRecipes = async () => {
     },
   });
 
-  // dataValues = dataValues.map((recipe) => {
-  //   console.log(recipe)
-  //   return {
-  //     id: recipe.id,
-  //     title: recipe.title,
-  //     summary: recipe.summary,
-  //     healthScore: recipe.healthScore,
-  //     instructions: recipe.instructions,
-  //     image: recipe.image,
-  //     diets: recipe.Diets
-  //   };
-  // });
-
-  console.log(dbResults);
   const { data } = await axios.get(
     `https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&number=100&addRecipeInformation=true
       `

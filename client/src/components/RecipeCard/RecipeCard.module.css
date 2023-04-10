@@ -1,0 +1,11 @@
+.cardContainer {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    height: auto;
+    width: 300px;  
+    margin: 10px;
+    padding: 20px;
+    border-radius: 10px;
+
+  }
