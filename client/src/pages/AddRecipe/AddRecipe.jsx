@@ -3,9 +3,11 @@ import React, { useEffect, useState } from "react";
 import s from "./addrecipe.module.css";
 import { addRecipe, getDiets } from "../../redux/actions/index.js";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const AddRecipe = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate()
   const diets = useSelector((state) => state.diets);
 
   const [payload, setPayload] = useState({
@@ -20,7 +22,7 @@ const AddRecipe = () => {
 
   useEffect(() => {
     dispatch(getDiets());
-  }, []);
+  },[]);
 
   const handleInputChange = (e) => {
     setPayload({
@@ -41,8 +43,8 @@ const AddRecipe = () => {
         payload.diets
       )
     );
+    navigate("/home")
   };
-  console.log();
   return (
     <div>
       <h1>Crea tu nueva receta:</h1>

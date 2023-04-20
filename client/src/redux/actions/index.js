@@ -7,6 +7,9 @@ export const LOADING = "LOADING";
 export const GET_RECIPES = "GET_RECIPES";
 export const ADD_RECIPE = "ADD_RECIPE";
 export const GET_DIETS = "GET_DIETS";
+export const GET_RECIPES_BY_QUERY = "GET_RECIPES_BY_QUERY";
+export const GET_RECIPES_BY_ID = "GET_RECIPES_BY_ID"
+
 export const register = (email, password) => {
   try {
     return async function (dispatch) {
@@ -19,6 +22,7 @@ export const register = (email, password) => {
         payload: response.data,
       });
     };
+    // eslint-disable-next-line no-unreachable
   } catch (err) {
     console.log(err);
   }
@@ -31,6 +35,7 @@ export const logout = () => {
         type: LOGOUT,
       });
     };
+  // eslint-disable-next-line no-unreachable
   } catch (err) {
     console.log(err);
   }
@@ -48,6 +53,7 @@ export const login = (email, password) => {
         payload: response.data,
       });
     };
+    // eslint-disable-next-line no-unreachable
   } catch (err) {
     console.log(err);
   }
@@ -61,6 +67,7 @@ export const getRecipes = () => {
         payload: response.data,
       });
     };
+    // eslint-disable-next-line no-unreachable
   } catch (err) {
     console.log(err);
   }
@@ -75,7 +82,7 @@ export const addRecipe = (
 ) => {
   try {
     return async function (dispatch) {
-      const { data } = await axios.post("http://localhost:3001/recipes", {
+      await axios.post("http://localhost:3001/recipes", {
         title,
         image,
         summary,
@@ -84,9 +91,10 @@ export const addRecipe = (
         diets,
       });
       return dispatch({
-        type: ADD_RECIPE
+        type: ADD_RECIPE,
       });
     };
+    // eslint-disable-next-line no-unreachable
   } catch (err) {
     console.log(err);
   }
@@ -100,7 +108,39 @@ export const getDiets = () => {
         payload: data,
       });
     };
+    // eslint-disable-next-line
   } catch (err) {
     console.log(err);
+  }
+};
+export const getRecipesByQuery = (searchKey) => {
+  try {
+    return async function (dispatch) {
+      const {data} = await axios.get(
+        `http://localhost:3001/recipes?query=${searchKey}`
+      );
+      return dispatch({
+        type: GET_RECIPES_BY_QUERY,
+        payload: data,
+      });
+    };
+    // eslint-disable-next-line no-unreachable
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getRecipeById = (id) => {
+  try {
+    return async function (dispatch) {
+      const { data } = await axios.get(`http://localhost:3001/recipes/${id}`);
+      return dispatch({
+        type: GET_RECIPES_BY_ID,
+        payload: data
+      })
+    };
+    // eslint-disable-next-line no-unreachable
+  } catch (error) {
+    console.log(error)
   }
 };

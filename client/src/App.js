@@ -1,11 +1,13 @@
 import "./App.css";
-import AddRecipe from "./components/AddRecipe/AddRecipe";
+import AddRecipe from "./pages/AddRecipe/AddRecipe";
 import Footer from "./components/Footer/Footer";
-import Home from "./components/Home/Home";
-import Login from "./components/Login/Login";
+import Home from "./pages/Home/Home";
+import Login from "./pages/Login/Login";
 import Nav from "./components/Nav/Nav";
-import Register from "./components/Registrer/Register";
+import Register from "./pages/Registrer/Register";
 import { Navigate, Route, Routes } from "react-router-dom";
+import SearchRecipe from "./pages/SearchRecipe/SearchRecipe";
+import RecipeDetail from "./pages/RecipeDetail/RecipeDetail";
 function App() {
   return (
     <div className="App">
@@ -15,7 +17,9 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/home" element={<Home />} />
         <Route path="/addRecipe" element={<AddRecipe />} />
-
+        <Route path="/searchRecipe" element={<SearchRecipe />} />
+        <Route path="/detail/:id" element={<RecipeDetail />} />
+      
         <Route path="*" element={<Navigate to="/login" />} />
       </Routes>
       <Footer/>

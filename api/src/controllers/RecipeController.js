@@ -4,6 +4,7 @@ const { Op } = require("sequelize");
 const { Diet } = require("../db");
 require("dotenv").config();
 const API_KEY = process.env.API_KEY;
+
 exports.getAllRecipes = async () => {
   const dbResults = await Recipe.findAll({
     include: {
@@ -16,8 +17,7 @@ exports.getAllRecipes = async () => {
   });
 
   const { data } = await axios.get(
-    `https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&number=100&addRecipeInformation=true
-      `
+    `https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&number=100&addRecipeInformation=true`
   );
   const { results } = data;
   const apiResults = results.map((recipe) => {
@@ -31,22 +31,10 @@ exports.getAllRecipes = async () => {
       diets: recipe.diets,
     };
   });
+
   return [...dbResults, ...apiResults];
 };
 
-exports.getRecipeFromDB = async (idRecipe) => {
-  const recipeDB = await Recipe.findByPk(idRecipe, {
-    include: {
-      model: Diet,
-      attributes: ["name"],
-      through: {
-        attributes: [],
-      },
-    },
-  });
-
-  return recipeDB;
-};
 exports.getRecipeFromAPI = async (idRecipe) => {
   const { data } = await axios.get(
     `https://api.spoonacular.com/recipes/${idRecipe}/information?apiKey=${API_KEY}`
@@ -63,12 +51,15 @@ exports.getRecipeFromAPI = async (idRecipe) => {
     diets,
   };
 };
+exports.getRecipeFromDB = async (idRecipe) => {
+  const recipe = await Recipe.findOne({ where: { id: idRecipe } });
+  return recipe;
+};
 
-exports.getRecipeByQuery = async (name) => {
+exports.getRecipeByQuery = async (searchKey) => {
   try {
     const { data } = await axios.get(
-      `https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&name=${name}&number=100&addRecipeInformation=true
-      `
+      `https://api.spoonacular.com/recipes/complexSearch?query=${searchKey}&number=100&apiKey=${API_KEY}&addRecipeInformation=true`
     );
     const { results } = data;
     const apiResults = results.map((recipe) => {
@@ -86,9 +77,9 @@ exports.getRecipeByQuery = async (name) => {
     const recipesFromDB = await Recipe.findAll({
       where: {
         [Op.or]: [
-          { title: { [Op.like]: `%${name}%` } },
-          { summary: { [Op.like]: `%${name}%` } },
-          { instructions: { [Op.like]: `%${name}%` } },
+          { title: { [Op.like]: `%${searchKey}%` } },
+          { summary: { [Op.like]: `%${searchKey}%` } },
+          { instructions: { [Op.like]: `%${searchKey}%` } },
         ],
       },
       include: {

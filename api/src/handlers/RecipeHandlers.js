@@ -22,9 +22,10 @@ const getRecipeHandler = async (req, res) => {
   }
 };
 const getRecipebyQueryHandler = async (req, res) => {
-  const { name } = req.query;
+  const { query } = req.query;
   try {
-    const result = name ? await getRecipeByQuery(name) : await getAllRecipes();
+    const result = query ? await getRecipeByQuery(query) : await getAllRecipes();
+    console.log(await getRecipeByQuery(query));
     res.status(200).json(result);
   } catch (error) {
     console.log(error);

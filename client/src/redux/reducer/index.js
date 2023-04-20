@@ -7,13 +7,16 @@ import {
   LOGIN_ERROR,
   GET_RECIPES,
   ADD_RECIPE,
-  GET_DIETS
+  GET_DIETS,
+  GET_RECIPES_BY_QUERY,
+  GET_RECIPES_BY_ID,
 } from "../actions";
 
 const initialState = {
   user: {},
   recipes: [],
-  diets:[]
+  diets: [],
+  recipe: {},
 };
 
 const rootReducer = (state = initialState, { type, payload }) => {
@@ -40,20 +43,29 @@ const rootReducer = (state = initialState, { type, payload }) => {
     case GET_RECIPES:
       return {
         ...state,
-        recipes: [ ...payload],
+        recipes: [...payload],
       };
     case ADD_RECIPE:
-      return{
+      return {
         ...state,
-        recipes: [...state.recipes]
-      }
+        recipes: [...state.recipes],
+      };
     case GET_DIETS:
+      return {
+        ...state,
+        diets: [...payload],
+      };
+    case GET_RECIPES_BY_QUERY:
+      return {
+        ...state,
+        recipes: [...payload],
+      };
+    case GET_RECIPES_BY_ID:
       return{
         ...state,
-        diets: [...state.diets, ...payload]
+        recipe : payload
       }
-
-    default:
+        default:
       return {
         ...state,
       };
