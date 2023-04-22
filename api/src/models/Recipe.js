@@ -26,9 +26,8 @@ module.exports = (sequelize) => {
         type: DataTypes.STRING,
         // allowNull: false,
       },
-      instructions: {
-        type: DataTypes.TEXT,
-        allowNull: false,
+      steps: {
+        type: DataTypes.STRING
       },
     },
     {

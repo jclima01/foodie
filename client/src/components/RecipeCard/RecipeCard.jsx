@@ -9,7 +9,7 @@ const handleNavigate = () =>{
   return (
     <div className={s.cardContainer} onClick={handleNavigate}>
       <h1>{recipe.title}</h1>
-      <img src={recipe.image} alt={recipe.title} />
+      <img src={recipe.image} alt={recipe.title} className={s.img}/>
     </div>
   );
 };

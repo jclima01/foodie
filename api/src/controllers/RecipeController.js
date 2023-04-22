@@ -26,9 +26,14 @@ exports.getAllRecipes = async () => {
       title: recipe.title,
       summary: recipe.summary,
       healthScore: recipe.healthScore,
-      instructions: recipe.instructions,
       image: recipe.image,
       diets: recipe.diets,
+      steps: recipe.analyzedInstructions[0]?.steps.map((e) => {
+        return {
+          number: e.number,
+          step: e.step,
+        };
+      }),
     };
   });
 
@@ -39,20 +44,41 @@ exports.getRecipeFromAPI = async (idRecipe) => {
   const { data } = await axios.get(
     `https://api.spoonacular.com/recipes/${idRecipe}/information?apiKey=${API_KEY}`
   );
-  const { id, title, summary, healthScore, instructions, image, diets } = data;
+  const {
+    id,
+    title,
+    summary,
+    healthScore,
+    analyzedInstructions,
+    image,
+    diets,
+  } = data;
 
   return {
     id,
     title,
     summary,
     healthScore,
-    instructions,
+    steps: analyzedInstructions[0]?.steps.map((e) => {
+      return {
+        number: e.number,
+        step: e.step,
+      };
+    }),
     image,
     diets,
   };
 };
 exports.getRecipeFromDB = async (idRecipe) => {
-  const recipe = await Recipe.findOne({ where: { id: idRecipe } });
+  const recipe = await Recipe.findByPk(idRecipe, {
+    include: {
+      model: Diet,
+      attributes: ["name"],
+      through: {
+        attributes: [],
+      },
+    },
+  });
   return recipe;
 };
 
@@ -68,9 +94,14 @@ exports.getRecipeByQuery = async (searchKey) => {
         title: recipe.title,
         summary: recipe.summary,
         healthScore: recipe.healthScore,
-        instructions: recipe.instructions,
         image: recipe.image,
         diets: recipe.diets,
+        steps: recipe.analyzedInstructions[0]?.steps.map((e) => {
+          return {
+            number: e.number,
+            step: e.step,
+          };
+        }),
       };
     });
 
@@ -79,7 +110,6 @@ exports.getRecipeByQuery = async (searchKey) => {
         [Op.or]: [
           { title: { [Op.like]: `%${searchKey}%` } },
           { summary: { [Op.like]: `%${searchKey}%` } },
-          { instructions: { [Op.like]: `%${searchKey}%` } },
         ],
       },
       include: {
@@ -96,7 +126,7 @@ exports.getRecipeByQuery = async (searchKey) => {
         title: recipe.title,
         summary: recipe.summary,
         healthScore: recipe.healthScore,
-        instructions: recipe.instructions,
+        steps: recipe.steps,
         image: recipe.image,
         diets: recipe.diets,
       };

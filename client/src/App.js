@@ -6,7 +6,6 @@ import Login from "./pages/Login/Login";
 import Nav from "./components/Nav/Nav";
 import Register from "./pages/Registrer/Register";
 import { Navigate, Route, Routes } from "react-router-dom";
-import SearchRecipe from "./pages/SearchRecipe/SearchRecipe";
 import RecipeDetail from "./pages/RecipeDetail/RecipeDetail";
 function App() {
   return (
@@ -17,12 +16,11 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/home" element={<Home />} />
         <Route path="/addRecipe" element={<AddRecipe />} />
-        <Route path="/searchRecipe" element={<SearchRecipe />} />
         <Route path="/detail/:id" element={<RecipeDetail />} />
-      
+
         <Route path="*" element={<Navigate to="/login" />} />
       </Routes>
-      <Footer/>
+      <Footer />
     </div>
   );
 }
