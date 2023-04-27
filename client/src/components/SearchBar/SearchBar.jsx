@@ -1,30 +1,31 @@
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getRecipesByQuery } from "../../redux/actions";
-
+import { getRecipesByQuery, setSearchKey } from "../../redux/actions";
+import styles from "./SearchBar.module.css";
+import img from "../../assets/search.png"
 const SearchBar = () => {
   const dispatch = useDispatch();
-  const [searchKey, setSearchKey] = useState("");
+  const searchKey = useSelector((state) => state.searchKey);
 
   const handleInputChange = (e) => {
-    setSearchKey(e.target.value);
+    dispatch(setSearchKey(e.target.value));
   };
-  const handleSubmit = (e) => {
+  const handleButton = (e) => {
     e.preventDefault();
     dispatch(getRecipesByQuery(searchKey));
   };
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="input"
-          id="form2Example1"
-          className="form-control"
-          onChange={handleInputChange}
-        />
-        <button type="submit">Search</button>
-      </form>
+    <div className={styles.searchBarContainer}>
+      <input
+        type="text"
+        name="input"
+        className={styles.input}
+        onChange={handleInputChange}
+        placeholder="Busca tu receta..."
+      />
+      <button onClick={handleButton} className={styles.btn}>
+        <img src={img} alt="search" />
+      </button>
     </div>
   );
 };

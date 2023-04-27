@@ -7,22 +7,24 @@ import { useNavigate } from "react-router-dom";
 
 const AddRecipe = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const diets = useSelector((state) => state.diets);
-
+  const [counter, setCounter] = useState(1);
+  const [stepsInput, setStepsInput] = useState("");
   const [payload, setPayload] = useState({
     title: "",
     image: "",
     summary: "",
     healthScore: "",
-    instructions: "",
+    steps: [],
     diets: [],
   });
   console.log(payload);
+  console.log(stepsInput);
 
   useEffect(() => {
     dispatch(getDiets());
-  },[]);
+  }, []);
 
   const handleInputChange = (e) => {
     setPayload({
@@ -30,7 +32,9 @@ const AddRecipe = () => {
       [e.target.name]: e.target.value,
     });
   };
-
+  const handleStepInputChange = (e) => {
+    setStepsInput(e.target.value);
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(
@@ -38,15 +42,32 @@ const AddRecipe = () => {
         payload.title,
         payload.image,
         payload.summary,
-        payload.instructions,
+        payload.steps,
         payload.healthScore,
         payload.diets
       )
     );
-    navigate("/home")
+    navigate("/home");
   };
+  const number = 1;
+  const addStep = (e) => {
+    e.preventDefault();
+    setCounter(counter + 1);
+    setPayload({
+      ...payload,
+      steps: [...payload.steps, { number: counter, step: stepsInput }],
+    });
+
+    setStepsInput("");
+    // setPayload({
+    //   ...payload,
+    //   stepsInput: "",
+    // });
+  };
+  console.log(payload.steps);
+
   return (
-    <div>
+    <div className={s.addRecipeContainer}>
       <h1>Crea tu nueva receta:</h1>
       <form onSubmit={handleSubmit}>
         <div className={s.inputs}>
@@ -93,18 +114,22 @@ const AddRecipe = () => {
             value={payload.healthScore}
             onChange={handleInputChange}
           />
-
-          <label text="instructions" htmlFor="instructions">
-            Instrucciones:
+          <label text="steps" htmlFor="steps">
+            Steps:
           </label>
-          <input
-            name="instructions"
-            id="instructions"
-            placeholder="Ingresa las instrucciones de la receta"
-            type="text"
-            value={payload.instructions}
-            onChange={handleInputChange}
-          />
+          <div>
+            <input
+              name="stepsInput"
+              id="stepsInput"
+              placeholder="Ingresa las steps de la receta"
+              type="text"
+              value={stepsInput}
+              onChange={handleStepInputChange}
+            />
+            <button onClick={addStep}>+</button>
+          </div>
+        </div>
+        <div className={s.checkboxs}>
           {diets?.map((diet) => {
             return (
               <div key={diet.id}>
@@ -125,7 +150,7 @@ const AddRecipe = () => {
                     } else {
                       setPayload({
                         ...payload,
-                        diets: payload.diets.filter((d) => d !== diet.id),
+                        diets: payload.diets.filter((d) => d.id !== diet.id),
                       });
                     }
                   }}
@@ -135,6 +160,8 @@ const AddRecipe = () => {
             );
           })}
         </div>
+
+        <div></div>
         <button className={s.btn} type="submit">
           Crear Receta
         </button>

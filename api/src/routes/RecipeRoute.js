@@ -5,12 +5,12 @@ require("dotenv").config();
 const {
   getRecipeHandler,
   postRecipeHandler,
-  getRecipebyQueryHandler
+  getRecipesHandler
 } = require("../handlers/RecipeHandlers.js");
 
 
 
-recipeRouter.get("/", getRecipebyQueryHandler);
+recipeRouter.get("/", getRecipesHandler);
 recipeRouter.get("/:idRecipe", getRecipeHandler);
 
 recipeRouter.post("/", postRecipeHandler);

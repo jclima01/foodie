@@ -3,7 +3,6 @@ const { Sequelize } = require("sequelize");
 const fs = require("fs");
 const path = require("path");
 const { DB_USER, DB_PASSWORD, DB_HOST } = process.env;
-const UserModel = require("./models/User.js");
 const DietModel = require("./models/Diet.js");
 const RecipeModel = require("./models/Recipe.js");
 const sequelize = new Sequelize(
@@ -40,7 +39,6 @@ const sequelize = new Sequelize(
 // En sequelize.models están todos los modelos importados como propiedades
 RecipeModel(sequelize);
 DietModel(sequelize);
-UserModel(sequelize);
 
 // Para relacionarlos hacemos un destructuring
 const { Recipe, Diet } = sequelize.models;

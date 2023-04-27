@@ -15,6 +15,18 @@ exports.getAllRecipes = async () => {
       },
     },
   });
+  const dbRes = dbResults.map((recipe) => {
+    return {
+      id: recipe.id,
+      title: recipe.title,
+      summary: recipe.summary,
+      healthScore: recipe.healthScore,
+      image: recipe.image,
+      diets: recipe.Diets.map((diet) => diet.name),
+      steps: JSON.parse(recipe.steps),
+      source: "db"
+    };
+  });
 
   const { data } = await axios.get(
     `https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&number=100&addRecipeInformation=true`
@@ -34,10 +46,11 @@ exports.getAllRecipes = async () => {
           step: e.step,
         };
       }),
+      source: "api"
     };
   });
 
-  return [...dbResults, ...apiResults];
+  return [...dbRes, ...apiResults];
 };
 
 exports.getRecipeFromAPI = async (idRecipe) => {
@@ -67,25 +80,40 @@ exports.getRecipeFromAPI = async (idRecipe) => {
     }),
     image,
     diets,
+    source: "api"
   };
 };
 exports.getRecipeFromDB = async (idRecipe) => {
-  const recipe = await Recipe.findByPk(idRecipe, {
-    include: {
-      model: Diet,
-      attributes: ["name"],
-      through: {
-        attributes: [],
+  try {
+    const recipe = await Recipe.findByPk(idRecipe, {
+      include: {
+        model: Diet,
+        attributes: ["name"],
+        through: {
+          attributes: [],
+        },
       },
-    },
-  });
-  return recipe;
+    });
+
+    return {
+      id: recipe.id,
+      title: recipe.title,
+      summary: recipe.summary,
+      healthScore: recipe.healthScore,
+      steps: JSON.parse(recipe.steps),
+      image: recipe.image,
+      diets: recipe.Diets.map((diet) => diet.name),
+      source: "db"
+    };
+  } catch (error) {
+    throw new Error(error.message);
+  }
 };
 
 exports.getRecipeByQuery = async (searchKey) => {
   try {
     const { data } = await axios.get(
-      `https://api.spoonacular.com/recipes/complexSearch?query=${searchKey}&number=100&apiKey=${API_KEY}&addRecipeInformation=true`
+      `https://api.spoonacular.com/recipes/complexSearch?number=100&apiKey=${API_KEY}&addRecipeInformation=true`
     );
     const { results } = data;
     const apiResults = results.map((recipe) => {
@@ -102,9 +130,12 @@ exports.getRecipeByQuery = async (searchKey) => {
             step: e.step,
           };
         }),
+        source: "api"
       };
     });
-
+    const filteredApiResults = apiResults.filter((recipe) =>
+      recipe.title.toLowerCase().includes(searchKey.toLowerCase())
+    );
     const recipesFromDB = await Recipe.findAll({
       where: {
         [Op.or]: [
@@ -126,12 +157,13 @@ exports.getRecipeByQuery = async (searchKey) => {
         title: recipe.title,
         summary: recipe.summary,
         healthScore: recipe.healthScore,
-        steps: recipe.steps,
+        steps: JSON.parse(recipe.steps),
         image: recipe.image,
-        diets: recipe.diets,
+        diets: recipe.Diets.map((diet) => diet.name),
+        source: "db"
       };
     });
-    return [...recipesdb, ...apiResults];
+    return [...recipesdb, ...filteredApiResults];
   } catch (error) {
     throw new Error(error.message);
   }
@@ -143,7 +175,7 @@ exports.postRecipe = async (
   image,
   summary,
   healthScore,
-  instructions
+  steps
 ) => {
   try {
     const newRecipe = await Recipe.create({
@@ -151,7 +183,7 @@ exports.postRecipe = async (
       image,
       summary,
       healthScore,
-      instructions,
+      steps: JSON.stringify(steps)
     });
 
     const arrDiets = diets.map((diet) => diet.id);

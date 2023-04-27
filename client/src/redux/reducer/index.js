@@ -1,54 +1,106 @@
 // Importa las action types acá
 
 import {
-  REGISTER,
-  LOGOUT,
-  LOGIN_SUCCESS,
-  LOGIN_ERROR,
   GET_RECIPES,
   ADD_RECIPE,
   GET_DIETS,
   GET_RECIPES_BY_QUERY,
   GET_RECIPES_BY_ID,
+  SET_SEARCH_KEY,
+  ALPHABETICAL_SORT,
+  DIET_FILTER,
+  SCORE_SORT,
+  GET_RECIPES_FROM_DB_OR_DB,
 } from "../actions";
 
 const initialState = {
-  user: {},
+  allRecipes: [],
   recipes: [],
   diets: [],
   recipe: {},
+  searchKey: "",
+  recipesFromApi: [],
+  recipesFromDB: [],
 };
 
 const rootReducer = (state = initialState, { type, payload }) => {
   switch (type) {
-    case REGISTER:
+    case SCORE_SORT:
+      let sortedByScore = [...state.recipes];
+      if (payload === "reset") {
+        return {
+          ...state,
+          recipes: [...state.allRecipes],
+        };
+      }
+      sortedByScore =
+        payload === "asc"
+          ? state.recipes.sort(function (a, b) {
+              if (a.healthScore > b.healthScore) return 1;
+              if (a.healthScore < b.healthScore) return -1;
+            })
+          : state.recipes.sort(function (a, b) {
+              if (a.healthScore < b.healthScore) return 1;
+              if (a.healthScore > b.healthScore) return -1;
+            });
       return {
         ...state,
+        recipes: [...sortedByScore],
       };
-    case LOGOUT:
+    case DIET_FILTER:
+      const recipes = [...state.recipes];
+      const filteredByDietType = recipes.filter((r) =>
+        r.diets?.some((d) => d.toLowerCase() === payload.toLowerCase())
+      );
+      if (payload === "reset") {
+        return {
+          ...state,
+          recipes: [...state.allRecipes],
+        };
+      }
       return {
         ...state,
+        recipes: [...filteredByDietType],
       };
-    case LOGIN_SUCCESS:
-      localStorage.setItem("user", JSON.stringify(payload));
+
+    case ALPHABETICAL_SORT:
+      let sortedRecipes = [...state.recipes];
+      if (payload === "reset") {
+        return {
+          ...state,
+          recipes: [...state.recipes],
+        };
+      }
+      sortedRecipes =
+        payload === "atoz"
+          ? sortedRecipes.sort(function (a, b) {
+              if (a.title.toLowerCase() > b.title.toLowerCase()) return 1;
+              if (a.title.toLowerCase() < b.title.toLowerCase()) return -1;
+            })
+          : sortedRecipes.sort(function (a, b) {
+              if (a.title.toLowerCase() < b.title.toLowerCase()) return 1;
+              if (a.title.toLowerCase() > b.title.toLowerCase()) return -1;
+            });
       return {
         ...state,
-        user: payload,
+        recipes: [...sortedRecipes],
       };
-    case LOGIN_ERROR:
+    case SET_SEARCH_KEY:
       return {
         ...state,
-        user: null,
+        searchKey: payload,
       };
     case GET_RECIPES:
       return {
         ...state,
         recipes: [...payload],
+        allRecipes: [...payload],
       };
     case ADD_RECIPE:
       return {
         ...state,
         recipes: [...state.recipes],
+        allRecipes: [...state.recipes],
       };
     case GET_DIETS:
       return {
@@ -61,11 +113,33 @@ const rootReducer = (state = initialState, { type, payload }) => {
         recipes: [...payload],
       };
     case GET_RECIPES_BY_ID:
-      return{
+      return {
         ...state,
-        recipe : payload
+        recipe: { ...payload },
+      };
+    case GET_RECIPES_FROM_DB_OR_DB:
+      const allRecipes = [...state.allRecipes];
+      const recipesFromApi = allRecipes.filter((r) => r.source === "api");
+      const recipesFromDb = allRecipes.filter((r) => r.source === "db");
+      if (payload === "reset") {
+        return {
+          ...state,
+          recipes: [...state.allRecipes],
+        };
       }
-        default:
+      if (payload === "api") {
+        return {
+          ...state,
+          recipes: [...recipesFromApi],
+        };
+      }
+      if (payload === "db") {
+        return {
+          ...state,
+          recipes: [...recipesFromDb],
+        };
+      }
+    default:
       return {
         ...state,
       };

@@ -8,7 +8,6 @@ const {
 
 const getRecipeHandler = async (req, res) => {
   const { idRecipe } = req.params;
-
   try {
     if (isNaN(idRecipe)) {
       const recipe = await getRecipeFromDB(idRecipe);
@@ -21,11 +20,13 @@ const getRecipeHandler = async (req, res) => {
     res.status(400).json(error.message);
   }
 };
-const getRecipebyQueryHandler = async (req, res) => {
+const getRecipesHandler = async (req, res) => {
   const { query } = req.query;
+
   try {
-    const result = query ? await getRecipeByQuery(query) : await getAllRecipes();
-    console.log(await getRecipeByQuery(query));
+    const result = query
+      ? await getRecipeByQuery(query)
+      : await getAllRecipes();
     res.status(200).json(result);
   } catch (error) {
     console.log(error);
@@ -33,7 +34,7 @@ const getRecipebyQueryHandler = async (req, res) => {
   }
 };
 const postRecipeHandler = async (req, res) => {
-  const { diets, title, image, summary, healthScore, instructions } = req.body;
+  const { diets, title, image, summary, healthScore, steps } = req.body;
   try {
     const newRecipe = await postRecipe(
       diets,
@@ -41,7 +42,7 @@ const postRecipeHandler = async (req, res) => {
       image,
       summary,
       healthScore,
-      instructions
+      steps
     );
 
     res.status(200).json(newRecipe);
@@ -53,5 +54,5 @@ const postRecipeHandler = async (req, res) => {
 module.exports = {
   postRecipeHandler,
   getRecipeHandler,
-  getRecipebyQueryHandler,
+  getRecipesHandler,
 };

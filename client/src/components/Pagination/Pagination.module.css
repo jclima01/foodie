@@ -1,0 +1,11 @@
+.paginationContainer {
+  height: 5vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.btn {
+  background-color: #ba3c0a50;
+}

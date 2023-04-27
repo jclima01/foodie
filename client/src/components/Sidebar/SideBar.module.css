@@ -1,0 +1,17 @@
+.sidebarcontainer {
+  display: flex;
+  flex-direction: column;
+  width: 20vw;
+  height: 90vh;
+  justify-content: space-evenly;
+  align-items: center;
+  margin-left: 5px;
+}
+.btn {
+  display: flex;
+  height: 100%;
+  border-radius: 4px;
+  background: #ba3c0a50;
+  cursor: pointer;
+ 
+}
