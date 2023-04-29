@@ -73,7 +73,7 @@ export const addRecipe = (
 export const getDiets = () => {
   try {
     return async function (dispatch) {
-      const { data } = await axios.get("http://localhost:3001/diets");
+      const { data } = await axios.get("/diets");
       return dispatch({
         type: GET_DIETS,
         payload: data,
@@ -88,7 +88,7 @@ export const getRecipesByQuery = (searchKey) => {
   try {
     return async function (dispatch) {
       const { data } = await axios.get(
-        `http://localhost:3001/recipes?query=${searchKey}`
+        `/recipes?query=${searchKey}`
       );
       return dispatch({
         type: GET_RECIPES_BY_QUERY,
@@ -104,7 +104,7 @@ export const getRecipesByQuery = (searchKey) => {
 export const getRecipeById = (id) => {
   try {
     return async function (dispatch) {
-      const { data } = await axios.get(`http://localhost:3001/recipes/${id}`);
+      const { data } = await axios.get(`/recipes/${id}`);
       return dispatch({
         type: GET_RECIPES_BY_ID,
         payload: data,
