@@ -20,11 +20,10 @@
 const server = require("./src/app.js");
 const { conn } = require("./src/db.js");
 require("dotenv").config();
-const { PGPORT } = process.env;
-const port = PGPORT || 3001;
+var port = process.env.PGPORT || 3000;
 // Syncing all the models at once.
 conn.sync({ force: true }).then(() => {
-  server.listen(port, "0.0.0.0", () => {
+  server.listen(port, '0.0.0.0', function () {
     console.log(`%s listening at ${port}`); // eslint-disable-line no-console
   });
 });
