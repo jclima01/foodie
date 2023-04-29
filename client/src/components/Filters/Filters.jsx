@@ -1,13 +1,23 @@
 import React, { useEffect } from "react";
-import { aplhabeticalSort, dietFilter, getDiets, getRecipesFromApiorDB, scoreSort } from "../../redux/actions";
+import {
+  aplhabeticalSort,
+  dietFilter,
+  getDiets,
+  getRecipesFromApiorDB,
+  scoreSort,
+  setLoading,
+} from "../../redux/actions";
 import { useDispatch, useSelector } from "react-redux";
 import s from "./Filters.module.css";
+import Loading from "../Loading/Loading";
 const Filters = () => {
   const diets = useSelector((state) => state.diets);
+  const loading = useSelector((state) => state.loading);
 
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getDiets());
+    dispatch(setLoading(false));
   }, [dispatch]);
 
   function handleDietTypeFilter(e) {
@@ -39,21 +49,25 @@ const Filters = () => {
       <label>Diets:</label>
       <select name="diets" onChange={(e) => handleDietTypeFilter(e)}>
         <option value="reset"></option>
-        {diets?.map((diet) => {
-          return (
-            <option key={diet.id} value={diet.name}>
-              {diet.name}
-            </option>
-          );
-        })}
+        {loading ? (
+          <Loading />
+        ) : (
+          diets?.map((diet) => {
+            return (
+              <option key={diet.id} value={diet.name}>
+                {diet.name}
+              </option>
+            );
+          })
+        )}
       </select>
-        <label>Health Score:</label>
+      <label>Health Score:</label>
       <select name="score" onChange={(e) => handleScoreSort(e)}>
         <option value="reset"></option>
         <option value="asc">Acendent</option>
         <option value="des">Descendent</option>
       </select>
-        <label>Source:</label>
+      <label>Source:</label>
       <select name="source" onChange={(e) => handleSource(e)}>
         <option value="reset"></option>
         <option value="api">Api</option>

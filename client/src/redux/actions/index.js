@@ -10,6 +10,7 @@ export const DIET_FILTER = "DIET_FILTER";
 export const ALPHABETICAL_SORT = "ALPHABETICAL_SORT";
 export const SCORE_SORT = "SCORE_SORT";
 export const GET_RECIPES_FROM_DB_OR_DB = "GET_RECIPES_FROM_DB_OR_DB";
+export const LOADING = "LOADING";
 
 
 export const setSearchKey = (searchKey) => {
@@ -152,6 +153,18 @@ export const getRecipesFromApiorDB = (payload) => {
     return async function (dispatch) {
       return dispatch({
         type: GET_RECIPES_FROM_DB_OR_DB,
+        payload: payload,
+      });
+    };
+  } catch (err) {
+    console.log(err);
+  }
+};
+export const setLoading = (payload) => {
+  try {
+    return async function (dispatch) {
+      return dispatch({
+        type: LOADING,
         payload: payload,
       });
     };

@@ -11,6 +11,7 @@ import {
   DIET_FILTER,
   SCORE_SORT,
   GET_RECIPES_FROM_DB_OR_DB,
+  LOADING
 } from "../actions";
 
 const initialState = {
@@ -21,10 +22,16 @@ const initialState = {
   searchKey: "",
   recipesFromApi: [],
   recipesFromDB: [],
+  loading: true,
 };
 
 const rootReducer = (state = initialState, { type, payload }) => {
   switch (type) {
+    case LOADING:
+      return {
+        ...state,
+        loading: payload
+      }
     case SCORE_SORT:
       let sortedByScore = [...state.recipes];
       if (payload === "reset") {
@@ -68,7 +75,7 @@ const rootReducer = (state = initialState, { type, payload }) => {
       if (payload === "reset") {
         return {
           ...state,
-          recipes: [...state.recipes],
+          recipes: [...state.allRecipes],
         };
       }
       sortedRecipes =

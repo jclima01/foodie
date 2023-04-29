@@ -7,8 +7,8 @@ import { getRecipes } from "../../redux/actions/index.js";
 const Home = () => {
   const recipes = useSelector((state) => state.recipes);
   const searchKey = useSelector((state) => state.searchKey);
+  const loading = useSelector((state) => state.loading);
   const dispatch = useDispatch();
-console.log(searchKey)
   const [actualPage, setActualPage] = useState(1);
   const [recipesPerPage, setRecipesPerPage] = useState(9);
 
@@ -18,6 +18,7 @@ console.log(searchKey)
   const pagination = (pagNumber) => {
     setActualPage(pagNumber);
   };
+
 
   useEffect(() => {
     if (searchKey.length === 0) dispatch(getRecipes());
