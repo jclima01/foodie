@@ -20,7 +20,7 @@
 const server = require("./src/app.js");
 const { conn } = require("./src/db.js");
 require("dotenv").config();
-var port = process.env.PGPORT || 3000;
+var port = process.env.PGPORT || 3001;
 // Syncing all the models at once.
 conn.sync({ force: true }).then(() => {
   server.listen(port, '0.0.0.0', function () {
