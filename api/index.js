@@ -17,13 +17,13 @@
 //     =====`-.____`.___ \_____/___.-`___.-'=====
 //                       `=---='
 //     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-import { listen } from "./src/app.js";
-import { conn } from "./src/db.js";
+const server = require("./src/app.js");
+const { conn } = require("./src/db.js");
 require("dotenv").config();
 var port = process.env.PGPORT || 3001;
 // Syncing all the models at once.
 conn.sync({ force: true }).then(() => {
-  listen(port, '0.0.0.0', function () {
+  server.listen(port, '0.0.0.0', function () {
     console.log(`%s listening at ${port}`); // eslint-disable-line no-console
   });
 });
