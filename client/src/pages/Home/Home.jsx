@@ -7,7 +7,7 @@ import { getRecipes } from "../../redux/actions/index.js";
 const Home = () => {
   const recipes = useSelector((state) => state.recipes);
   const searchKey = useSelector((state) => state.searchKey);
-  const loading = useSelector((state) => state.loading);
+  // const loading = useSelector((state) => state.loading);
   const dispatch = useDispatch();
   const [actualPage, setActualPage] = useState(1);
   const [recipesPerPage, setRecipesPerPage] = useState(9);
@@ -15,22 +15,20 @@ const Home = () => {
   const lastRecipeIndex = actualPage * recipesPerPage;
   const firstRecipeIndex = lastRecipeIndex - recipesPerPage;
   const recipeSlice = recipes.slice(firstRecipeIndex, lastRecipeIndex);
-  const pagination = (pagNumber) => {
-    setActualPage(pagNumber);
-  };
+  
+
 
 
   useEffect(() => {
-    if (searchKey.length === 0) dispatch(getRecipes());
+    if (!searchKey) dispatch(getRecipes());
 
-  }, [dispatch]);
-  console.log(recipeSlice)
+  }, [dispatch,searchKey]);
   return (
     <div className={styles.homeContainer}>
       <Pagination
         recipesPerPage={recipesPerPage}
         recipes={recipes.length}
-        pagination={pagination}
+        pagination={setActualPage}
       />
       <GridCards recipes={recipeSlice} />
     </div>

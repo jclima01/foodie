@@ -40,14 +40,14 @@ const Filters = () => {
 
   return (
     <div className={s.filtersContainer}>
-      <label>Sort:</label>
-      <select name="alphabetical" onChange={(e) => handleAlphabeticalSort(e)}>
+      <label className={s.label}>Sort:</label>
+      <select name="alphabetical" onChange={(e) => handleAlphabeticalSort(e)} className={s.select}>
         <option value="reset"></option>
         <option value="atoz">A to Z</option>
         <option value="ztoa">Z to A</option>
       </select>
-      <label>Diets:</label>
-      <select name="diets" onChange={(e) => handleDietTypeFilter(e)}>
+      <label className={s.label}>Diets:</label>
+      <select name="diets" onChange={(e) => handleDietTypeFilter(e)} className={s.select}>
         <option value="reset"></option>
         {loading ? (
           <Loading />
@@ -61,14 +61,14 @@ const Filters = () => {
           })
         )}
       </select>
-      <label>Health Score:</label>
-      <select name="score" onChange={(e) => handleScoreSort(e)}>
+      <label className={s.label}>Health Score:</label>
+      <select name="score" onChange={(e) => handleScoreSort(e)} className={s.select}>
         <option value="reset"></option>
         <option value="asc">Acendent</option>
         <option value="des">Descendent</option>
       </select>
-      <label>Source:</label>
-      <select name="source" onChange={(e) => handleSource(e)}>
+      <label className={s.label}>Source:</label>
+      <select name="source" onChange={(e) => handleSource(e)} className={s.select}>
         <option value="reset"></option>
         <option value="api">Api</option>
         <option value="db">Db</option>

@@ -1,5 +1,5 @@
 import React from "react";
-
+import s from "./Login.module.css"
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
@@ -10,7 +10,7 @@ const Login = () => {
   };
 
   return (
-    <div>
+    <div className={s.loginContainer}>
       <button onClick={handleClick}>Log in</button>
     </div>
   );

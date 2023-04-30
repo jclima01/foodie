@@ -12,7 +12,6 @@ export const SCORE_SORT = "SCORE_SORT";
 export const GET_RECIPES_FROM_DB_OR_DB = "GET_RECIPES_FROM_DB_OR_DB";
 export const LOADING = "LOADING";
 
-
 export const setSearchKey = (searchKey) => {
   try {
     return async function (dispatch) {
@@ -27,11 +26,10 @@ export const setSearchKey = (searchKey) => {
   }
 };
 
-
 export const getRecipes = () => {
   try {
     return async function (dispatch) {
-      const response = await axios.get("http://localhost:3001/recipes");
+      const response = await axios.get("http://localhost:7096/recipes");
       return dispatch({
         type: GET_RECIPES,
         payload: response.data,
@@ -42,17 +40,10 @@ export const getRecipes = () => {
     console.log(err);
   }
 };
-export const addRecipe = (
-  title,
-  image,
-  summary,
-  steps,
-  healthScore,
-  diets
-) => {
+export const addRecipe = (title, image, summary, steps, healthScore, diets) => {
   try {
     return async function (dispatch) {
-      await axios.post("http://localhost:3001/recipes", {
+      await axios.post("http://localhost:7096/recipes", {
         title,
         image,
         summary,
@@ -73,7 +64,7 @@ export const addRecipe = (
 export const getDiets = () => {
   try {
     return async function (dispatch) {
-      const { data } = await axios.get("/diets");
+      const { data } = await axios.get("http://localhost:7096/diets");
       return dispatch({
         type: GET_DIETS,
         payload: data,
@@ -87,9 +78,7 @@ export const getDiets = () => {
 export const getRecipesByQuery = (searchKey) => {
   try {
     return async function (dispatch) {
-      const { data } = await axios.get(
-        `/recipes?query=${searchKey}`
-      );
+      const { data } = await axios.get(`http://localhost:7096/recipes?query=${searchKey}`);
       return dispatch({
         type: GET_RECIPES_BY_QUERY,
         payload: data,
@@ -104,7 +93,7 @@ export const getRecipesByQuery = (searchKey) => {
 export const getRecipeById = (id) => {
   try {
     return async function (dispatch) {
-      const { data } = await axios.get(`/recipes/${id}`);
+      const { data } = await axios.get(`http://localhost:7096/recipes/${id}`);
       return dispatch({
         type: GET_RECIPES_BY_ID,
         payload: data,
@@ -122,6 +111,7 @@ export const dietFilter = (payload) => {
       type: DIET_FILTER,
       payload: payload,
     };
+    // eslint-disable-next-line no-unreachable
   } catch (error) {
     console.log(error);
   }
@@ -133,6 +123,7 @@ export function aplhabeticalSort(payload) {
       type: ALPHABETICAL_SORT,
       payload: payload,
     };
+    // eslint-disable-next-line no-unreachable
   } catch (error) {
     console.log(error);
   }
@@ -143,6 +134,7 @@ export function scoreSort(payload) {
       type: SCORE_SORT,
       payload: payload,
     };
+    // eslint-disable-next-line no-unreachable
   } catch (error) {
     console.log(error);
   }
@@ -156,6 +148,7 @@ export const getRecipesFromApiorDB = (payload) => {
         payload: payload,
       });
     };
+    // eslint-disable-next-line no-unreachable
   } catch (err) {
     console.log(err);
   }
@@ -168,6 +161,7 @@ export const setLoading = (payload) => {
         payload: payload,
       });
     };
+    // eslint-disable-next-line no-unreachable
   } catch (err) {
     console.log(err);
   }

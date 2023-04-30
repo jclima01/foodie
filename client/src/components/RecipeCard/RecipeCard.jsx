@@ -8,18 +8,20 @@ const RecipeCard = ({ recipe }) => {
   };
   return (
     <div className={s.cardContainer} onClick={handleNavigate}>
-      <img src={recipe.image} alt={recipe.title} className={s.img} />
+      <div>
+        <img src={recipe.image} alt={recipe.title} className={s.img} />
         <h3 className={s.healthScore}>⭐{recipe.healthScore}</h3>
-      <div className={s.dietsContainer}>
-        {recipe.diets?.map((diet) => {
-          return (
-            <h2 key={diet} className={s.diet}>
-              {diet}
-            </h2>
-          );
-        })}
+        <div className={s.dietsContainer}>
+          {recipe.diets?.map((diet) => {
+            return (
+              <h2 key={diet} className={s.diet}>
+                {diet}
+              </h2>
+            );
+          })}
+        </div>
       </div>
-      <h1 className={s.title}>{recipe.title}</h1>
+        <h1 className={s.title}>{recipe.title}</h1>
     </div>
   );
 };

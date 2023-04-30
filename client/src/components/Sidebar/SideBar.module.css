@@ -8,10 +8,17 @@
   margin-left: 5px;
 }
 .btn {
-  display: flex;
-  height: 100%;
   border-radius: 4px;
-  background: #ba3c0a50;
+  font-style: bold;
+  width: 200px;
+  height: 30px;
+  background: #ec9595a4;
   cursor: pointer;
- 
+
+  font-weight: 700;
+  font-size: 15px;
+  color: #1b1b1bd2;
+}
+.btn:hover {
+  background: #bb36019f;
 }
