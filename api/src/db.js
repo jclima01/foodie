@@ -6,7 +6,7 @@ const { PGUSER, PGPASSWORD, PGHOST,PGDATABASE } = process.env;
 const DietModel = require("./models/Diet.js");
 const RecipeModel = require("./models/Recipe.js");
 const sequelize = new Sequelize(
-  `postgres://${PGUSER}:${PGPASSWORD}@${PGHOST}/${PGDATABASE}`,
+  `postgressql://${PGUSER}:${PGPASSWORD}@${PGHOST}/${PGDATABASE}`,
   {
     logging: false, // set to console.log to see the raw SQL queries
     native: false, // lets Sequelize know we can use pg-native for ~30% more speed
