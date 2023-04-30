@@ -29,7 +29,7 @@ export const setSearchKey = (searchKey) => {
 export const getRecipes = () => {
   try {
     return async function (dispatch) {
-      const response = await axios.get("http://localhost:7096/recipes");
+      const response = await axios.get("https://foodie.up.railway.app/recipes");
       return dispatch({
         type: GET_RECIPES,
         payload: response.data,
@@ -43,7 +43,7 @@ export const getRecipes = () => {
 export const addRecipe = (title, image, summary, steps, healthScore, diets) => {
   try {
     return async function (dispatch) {
-      await axios.post("http://localhost:7096/recipes", {
+      await axios.post("https://foodie.up.railway.app/recipes", {
         title,
         image,
         summary,
@@ -64,7 +64,7 @@ export const addRecipe = (title, image, summary, steps, healthScore, diets) => {
 export const getDiets = () => {
   try {
     return async function (dispatch) {
-      const { data } = await axios.get("http://localhost:7096/diets");
+      const { data } = await axios.get("https://foodie.up.railway.app/diets");
       return dispatch({
         type: GET_DIETS,
         payload: data,
@@ -78,7 +78,7 @@ export const getDiets = () => {
 export const getRecipesByQuery = (searchKey) => {
   try {
     return async function (dispatch) {
-      const { data } = await axios.get(`http://localhost:7096/recipes?query=${searchKey}`);
+      const { data } = await axios.get(`https://foodie.up.railway.app/recipes?query=${searchKey}`);
       return dispatch({
         type: GET_RECIPES_BY_QUERY,
         payload: data,
@@ -93,7 +93,7 @@ export const getRecipesByQuery = (searchKey) => {
 export const getRecipeById = (id) => {
   try {
     return async function (dispatch) {
-      const { data } = await axios.get(`http://localhost:7096/recipes/${id}`);
+      const { data } = await axios.get(`https://foodie.up.railway.app/recipes/${id}`);
       return dispatch({
         type: GET_RECIPES_BY_ID,
         payload: data,
