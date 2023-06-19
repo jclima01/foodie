@@ -6,7 +6,8 @@ import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
 import store from "./redux/store/index.js";
 import { BrowserRouter } from "react-router-dom";
-
+import axios from "axios"
+axios.defaults.baseURL = "https://foodie-back-5zy4.onrender.com"
 
 ReactDOM.render(
   <Provider store={store}>

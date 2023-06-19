@@ -31,7 +31,7 @@ export const setSearchKey = (searchKey) => {
 export const getRecipes = () => {
   try {
     return function (dispatch) {
-      fetch("http://localhost:6800/recipes")
+      fetch("https://foodie-back-5zy4.onrender.com/recipes")
         .then((response) => response.json())
         .then((data) => {
           return dispatch({
@@ -48,7 +48,7 @@ export const getRecipes = () => {
 export const addRecipe = (title, image, summary, steps, healthScore, diets) => {
   try {
     return async function (dispatch) {
-      await axios.post("http://localhost:6800/recipes", {
+      await axios.post("https://foodie-back-5zy4.onrender.com/recipes", {
         title,
         image,
         summary,
@@ -69,7 +69,7 @@ export const addRecipe = (title, image, summary, steps, healthScore, diets) => {
 export const getDiets = () => {
   try {
     return async function (dispatch) {
-      const { data } = await axios.get("http://localhost:6800/diets");
+      const { data } = await axios.get("https://foodie-back-5zy4.onrender.com/diets");
       return dispatch({
         type: GET_DIETS,
         payload: data,
@@ -84,7 +84,7 @@ export const getRecipesByQuery = (searchKey) => {
   try {
     return async function (dispatch) {
       const { data } = await axios.get(
-        `http://localhost:6800/recipes?query=${searchKey}`
+        `https://foodie-back-5zy4.onrender.com/recipes?query=${searchKey}`
       );
       return dispatch({
         type: GET_RECIPES_BY_QUERY,
@@ -100,7 +100,7 @@ export const getRecipesByQuery = (searchKey) => {
 export const getRecipeById = (id) => {
   try {
     return async function (dispatch) {
-      const { data } = await axios.get(`http://localhost:6800/recipes/${id}`);
+      const { data } = await axios.get(`https://foodie-back-5zy4.onrender.com/recipes/${id}`);
 
       return dispatch({
         type: GET_RECIPES_BY_ID,
