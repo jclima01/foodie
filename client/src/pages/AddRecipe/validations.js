@@ -2,13 +2,17 @@
 export const validation = (payload) => {
   let errors = {};
   if (!payload.title)
-    errors.title = "La receta debe tener un titulo";
+    errors.title = "Enter recipe title";
   if (!payload.image)
-    errors.image = "La receta debe tener una url par la imagen";
+    errors.image = "Enter image url";
   if (!payload.summary)
-    errors.summary = "La receta debe tener un summary";
+    errors.summary = "Enter a summary";
   if (!payload.healthScore)
-    errors.healthScore = "La receta debe tener un healthScore";
+    errors.healthScore = "Enter score";
+  if (payload.diets.length === 0)
+    errors.diets = "Select at least one diet";
+  if (payload.steps.length === 0)
+    errors.steps = "Add at least one steps";
 
   return errors;
 };

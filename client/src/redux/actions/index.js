@@ -10,7 +10,9 @@ export const DIET_FILTER = "DIET_FILTER";
 export const ALPHABETICAL_SORT = "ALPHABETICAL_SORT";
 export const SCORE_SORT = "SCORE_SORT";
 export const GET_RECIPES_FROM_DB_OR_DB = "GET_RECIPES_FROM_DB_OR_DB";
-export const LOADING = "LOADING";
+export const CLEAN_RECIPE = "CLEAN_RECIPE";
+export const SET_LOADING = "SET_LOADING";
+export const CLEAN_STATES = "CLEAN_STATES";
 
 export const setSearchKey = (searchKey) => {
   try {
@@ -28,12 +30,15 @@ export const setSearchKey = (searchKey) => {
 
 export const getRecipes = () => {
   try {
-    return async function (dispatch) {
-      const response = await axios.get("https://foodie.up.railway.app/recipes");
-      return dispatch({
-        type: GET_RECIPES,
-        payload: response.data,
-      });
+    return function (dispatch) {
+      fetch("http://localhost:6800/recipes")
+        .then((response) => response.json())
+        .then((data) => {
+          return dispatch({
+            type: GET_RECIPES,
+            payload: data,
+          });
+        });
     };
     // eslint-disable-next-line no-unreachable
   } catch (err) {
@@ -43,7 +48,7 @@ export const getRecipes = () => {
 export const addRecipe = (title, image, summary, steps, healthScore, diets) => {
   try {
     return async function (dispatch) {
-      await axios.post("https://foodie.up.railway.app/recipes", {
+      await axios.post("http://localhost:6800/recipes", {
         title,
         image,
         summary,
@@ -64,7 +69,7 @@ export const addRecipe = (title, image, summary, steps, healthScore, diets) => {
 export const getDiets = () => {
   try {
     return async function (dispatch) {
-      const { data } = await axios.get("https://foodie.up.railway.app/diets");
+      const { data } = await axios.get("http://localhost:6800/diets");
       return dispatch({
         type: GET_DIETS,
         payload: data,
@@ -78,7 +83,9 @@ export const getDiets = () => {
 export const getRecipesByQuery = (searchKey) => {
   try {
     return async function (dispatch) {
-      const { data } = await axios.get(`https://foodie.up.railway.app/recipes?query=${searchKey}`);
+      const { data } = await axios.get(
+        `http://localhost:6800/recipes?query=${searchKey}`
+      );
       return dispatch({
         type: GET_RECIPES_BY_QUERY,
         payload: data,
@@ -93,7 +100,8 @@ export const getRecipesByQuery = (searchKey) => {
 export const getRecipeById = (id) => {
   try {
     return async function (dispatch) {
-      const { data } = await axios.get(`https://foodie.up.railway.app/recipes/${id}`);
+      const { data } = await axios.get(`http://localhost:6800/recipes/${id}`);
+
       return dispatch({
         type: GET_RECIPES_BY_ID,
         payload: data,
@@ -153,16 +161,42 @@ export const getRecipesFromApiorDB = (payload) => {
     console.log(err);
   }
 };
-export const setLoading = (payload) => {
+
+export const cleanRecipe = (id) => {
   try {
     return async function (dispatch) {
       return dispatch({
-        type: LOADING,
-        payload: payload,
+        type: CLEAN_RECIPE,
       });
     };
     // eslint-disable-next-line no-unreachable
-  } catch (err) {
-    console.log(err);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const setLoading = (boolean) => {
+  try {
+    return async function (dispatch) {
+      return dispatch({
+        type: SET_LOADING,
+        payload: boolean,
+      });
+    };
+    // eslint-disable-next-line no-unreachable
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const cleanStates = () => {
+  try {
+    return async function (dispatch) {
+      return dispatch({
+        type: CLEAN_STATES,
+      });
+    };
+    // eslint-disable-next-line no-unreachable
+  } catch (error) {
+    console.log(error);
   }
 };
